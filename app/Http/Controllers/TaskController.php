@@ -53,4 +53,24 @@ class TaskController extends Controller
             'data' => $tasks->get()
         ]);
     }
+        public function show($id){
+            $tasks = Task::findOrFail($id);
+            return response()->json(['data'=>$tasks]);
+        }
+        public function update(Request $request, $id){
+        $inputs = $request->validate([
+            'name' => ['string', 'required'],
+                'description' => ['max:1000'],
+                'is_done' => ['boolean'],
+                'before_date' => [],
+                'priority' => ['required', 'string', 'in:low,mid,high']
+            ]);
+            Task::findOrFail($id)->update($inputs);
+            return response()->json(['data'=>'updated task'] );
+        }
+        public function destroy($id){
+            $tasks = Task::findOrFail($id);
+            $tasks->delete();
+            return response()->json(['data'=>'task deleted']) ;
+    }
 }
