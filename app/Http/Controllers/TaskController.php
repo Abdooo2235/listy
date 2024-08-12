@@ -44,6 +44,10 @@ class TaskController extends Controller
         if ($request->has('sort')) {
             $tasks = $tasks->orderBy($request->input('sort'), 'asc');
         }
+        if ($request->has('is_done')) {
+            $tasks = $tasks->where('is_done', '=', true);
+        }
+
 
         return response()->json([
             'data' => $tasks->get()
